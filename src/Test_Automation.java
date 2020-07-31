@@ -5,8 +5,10 @@ public class Test_Automation extends JPanel{
     public static void main(String[] args)
     {
         Test_Automation automation = new Test_Automation();
+        FileList fileList = new FileList();
         JFrame app = new JFrame("Test Automation");
         app.add(automation, BorderLayout.CENTER);
+        app.add(fileList, BorderLayout.WEST);
         app.setSize(1600, 900);
         app.setLocationRelativeTo(null);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
