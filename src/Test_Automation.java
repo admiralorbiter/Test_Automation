@@ -2,31 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Test_Automation extends JPanel{
-    public static void main(String[] args)
-    {
-        Test_Automation automation = new Test_Automation();
-        FileList fileList = new FileList();
-        JFrame app = new JFrame("Test Automation");
-        app.add(automation, BorderLayout.CENTER);
-        app.add(fileList, BorderLayout.WEST);
-        app.setSize(1600, 900);
-        app.setLocationRelativeTo(null);
-        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        app.setVisible(true);
+
+    public Test_Automation(){
+        setSize(1300, 900);
+        setPreferredSize(new Dimension(1300, 900));
     }
 
     @Override
     public void paintComponent(Graphics g)
     {
-        Color bColor = Color.WHITE;
-
-        g.setColor(bColor);
-        int offset = 0;
-        g.fillRect(offset, 0, getWidth() - 1 - offset, getHeight() - 1);
-
         super.paintComponent(g);
+        Color bColor = Color.white;
+        setBackground(bColor);
     }
-
-    //public int getWidth(){return 400;}
-    //public int getHeight(){return 400;}
 }

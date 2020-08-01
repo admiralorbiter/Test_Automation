@@ -8,6 +8,8 @@ public class FileList extends JPanel {
 
     public FileList()
     {
+        setSize(300, 900);
+        setPreferredSize(new Dimension(300, 900));
         fileList.add("Test1");
         fileList.add("Test2");
         fileList.add("Test3");
@@ -16,14 +18,11 @@ public class FileList extends JPanel {
     @Override
     public void paintComponent(Graphics g)
     {
-        Color bColor = Color.GRAY;
-
-        g.setColor(bColor);
-        int offset = 0;
-        g.fillRect(offset, 0, getWidth()/3 - 1 - offset, getHeight() - 1);
-        for(int i=0; i<fileList.size(); i++)
-            g.drawString(fileList.get(i), getHeight()-10, 10);
-
         super.paintComponent(g);
+        setBackground(Color.gray);
+        g.setColor(Color.white);
+        for(int i=0; i<fileList.size(); i++) {
+            g.drawString(fileList.get(i), 0, 15+i*15);
+        }
     }
 }
