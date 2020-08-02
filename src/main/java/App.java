@@ -7,14 +7,17 @@ public class App extends JFrame implements MouseListener {
     Test_Automation automation = new Test_Automation();
     FileParser fileParser = new FileParser();
     FileList fileList = new FileList(fileParser.screenshotlist);
-
+    TopMenu topMenu = new TopMenu();
+    ScriptingArea scriptingArea = new ScriptingArea();
     public App(){
         init();
     }
 
     private void init(){
         setTitle("Test Automation");
-        add(automation, BorderLayout.CENTER);
+        setJMenuBar(topMenu);
+        //add(automation, BorderLayout.CENTER);
+        add(scriptingArea, BorderLayout.CENTER);
         add(fileList, BorderLayout.WEST);
         setSize(1600, 900);
         setLocationRelativeTo(null);
@@ -22,14 +25,10 @@ public class App extends JFrame implements MouseListener {
         setResizable(false);
         setVisible(true);
         addMouseListener(this);
-        Screenshot.takeScreenshot("test.jpg", fileParser);
-        Screenshot.takeScreenshot("test1.jpg", fileParser);
-        Screenshot.takeScreenshot("test2.jpg", fileParser);
-        Screenshot.takeScreenshot("test3.jpg", fileParser);
-        Screenshot.takeScreenshot("test4.jpg", fileParser);
     }
 
     public void run(){
+        topMenu.update(scriptingArea);
         repaint();
     }
 
