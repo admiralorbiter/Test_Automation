@@ -1,3 +1,5 @@
+package FileTreeExamples;
+
 import java.awt.*;
 import javax.swing.*;
 public class MultiplePanelTest extends JFrame {
