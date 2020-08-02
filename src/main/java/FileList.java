@@ -15,9 +15,11 @@ public class FileList extends JPanel {
 
     public String checkmouseclick(Point mouseclick){
 
+        int topOffset=90;
+
         //First check to make sure it is within the height of the list
-        if(mouseclick.y<50+fileList.size()*20){
-            return fileList.get((int)((mouseclick.y-50)/20));
+        if(mouseclick.y<topOffset+fileList.size()*20){
+            return fileList.get((int)((mouseclick.y-topOffset)/20));
         }
 
         return null;

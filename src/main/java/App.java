@@ -9,6 +9,8 @@ public class App extends JFrame implements MouseListener {
     FileList fileList = new FileList(fileParser.screenshotlist);
     TopMenu topMenu = new TopMenu();
     ScriptingArea scriptingArea = new ScriptingArea();
+    FeatureBar featureBar = new FeatureBar();
+
     public App(){
         init();
     }
@@ -18,7 +20,11 @@ public class App extends JFrame implements MouseListener {
         setJMenuBar(topMenu);
         //add(automation, BorderLayout.CENTER);
         add(scriptingArea, BorderLayout.CENTER);
+        add(automation, BorderLayout.CENTER);
+        scriptingArea.setVisible(true);
+        automation.setVisible(false);
         add(fileList, BorderLayout.WEST);
+        add(featureBar, BorderLayout.NORTH);
         setSize(1600, 900);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,13 +35,19 @@ public class App extends JFrame implements MouseListener {
 
     public void run(){
         topMenu.update(scriptingArea);
+
+        if(featureBar.getCurrentFeatureSelection().equals("scripting")){
+            scriptingArea.setVisible(true);
+            automation.setVisible(false);
+        }
         repaint();
     }
 
     public static void main(String[] args)
     {
         App app = new App();
-        app.run();
+        while(true)
+            app.run();
     }
 
     @Override
@@ -49,6 +61,9 @@ public class App extends JFrame implements MouseListener {
         if(filepath!=null){
             System.out.println(filepath+" picked from list.");
             automation.openImage(fileParser.openImage(filepath));
+            featureBar.setCurrentFeatureSelection("screenshot");
+            automation.setVisible(true);
+            scriptingArea.setVisible(false);
         }
     }
 
