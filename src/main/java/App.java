@@ -11,6 +11,8 @@ public class App extends JFrame implements MouseListener {
     TopMenu topMenu = new TopMenu();
     ScriptingArea scriptingArea = new ScriptingArea();
     FeatureBar featureBar = new FeatureBar();
+    JPanel centerPane = new JPanel();
+    CardLayout layout = new CardLayout();
 
     private int clicks=0;
     private Rectangle screenshotArea=new Rectangle();
@@ -39,10 +41,15 @@ public class App extends JFrame implements MouseListener {
     private void init(){
         setTitle("Test Automation");
         setJMenuBar(topMenu);
-        //add(scriptingArea, BorderLayout.CENTER);
-        add(automation, BorderLayout.CENTER);
-        scriptingArea.setVisible(true);
-        automation.setVisible(false);
+        centerPane.setLayout(layout);
+        centerPane.setPreferredSize(new Dimension(1300, 900));
+        centerPane.setSize(new Dimension(1300, 900));
+        centerPane.add(automation);
+        centerPane.add(scriptingArea);
+        add(centerPane, BorderLayout.CENTER);
+        centerPane.setVisible(true);
+        layout.last(centerPane);
+
         add(fileList, BorderLayout.WEST);
         add(featureBar, BorderLayout.NORTH);
         setSize(1600, 900);
@@ -67,6 +74,8 @@ public class App extends JFrame implements MouseListener {
                 System.out.println("Setting Opacity");
             }
         }else if(feature.equals("taking_screenshot")){
+
+        }else if(feature.equals("viewing_screenshot")){
 
         }
         repaint();
