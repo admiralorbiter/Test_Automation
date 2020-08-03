@@ -34,7 +34,7 @@ public class FeatureBar extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("scripting")){
-            currentFeatureSelection="scripting";
+            currentFeatureSelection="switch_scripting";
         }else if(e.getActionCommand().equals("taking_screenshot")){
             currentFeatureSelection="screenshotMode";
             System.out.println(currentFeatureSelection);

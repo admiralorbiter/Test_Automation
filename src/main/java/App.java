@@ -10,7 +10,7 @@ public class App extends JFrame implements MouseListener {
     FileList fileList = new FileList(fileParser.screenshotlist);
     TopMenu topMenu = new TopMenu();
     ScriptingArea scriptingArea = new ScriptingArea();
-    FeatureBar featureBar = new FeatureBar();
+    FeatureBar featureBar;
     JPanel centerPane = new JPanel();
     CardLayout layout = new CardLayout();
 
@@ -26,6 +26,7 @@ public class App extends JFrame implements MouseListener {
 
     public void initTransparent(){
         setUndecorated(true);
+        featureBar = new FeatureBar();
         featureBar.setCurrentFeatureSelection("screenshotMode");
 
         add(new JPanel());
@@ -50,6 +51,7 @@ public class App extends JFrame implements MouseListener {
         centerPane.setVisible(true);
         layout.last(centerPane);
 
+        featureBar = new FeatureBar();
         add(fileList, BorderLayout.WEST);
         add(featureBar, BorderLayout.NORTH);
         setSize(1600, 900);
@@ -64,9 +66,12 @@ public class App extends JFrame implements MouseListener {
         topMenu.update(scriptingArea);
         String feature=featureBar.getCurrentFeatureSelection();
         //System.out.print(feature);
-        if(feature.equals("scripting")){
+        if(feature.equals("switch_scripting")){
             //scriptingArea.setVisible(true);
             //automation.setVisible(false);
+            layout.last(centerPane);
+            feature="scripting";
+            featureBar.setCurrentFeatureSelection(feature);
         }else if(feature.equals("screenshotMode")){
             if(isUndecorated()){
                 feature="taking_screenshot";
@@ -75,7 +80,11 @@ public class App extends JFrame implements MouseListener {
             }
         }else if(feature.equals("taking_screenshot")){
 
-        }else if(feature.equals("viewing_screenshot")){
+        }else if(feature.equals("switch_viewing_screenshot")){
+            layout.first(centerPane);
+            feature="viewing_screenshot";
+            featureBar.setCurrentFeatureSelection(feature);
+        } else if(feature.equals("viewing_screenshot")){
 
         }
         repaint();
@@ -128,7 +137,7 @@ public class App extends JFrame implements MouseListener {
             if(filepath!=null){
                 System.out.println(filepath+" picked from list.");
                 automation.openImage(fileParser.openImage(filepath));
-                featureBar.setCurrentFeatureSelection("viewing_screenshot");
+                featureBar.setCurrentFeatureSelection("switch_viewing_screenshot");
             }
         }
     }
