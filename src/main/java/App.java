@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
@@ -27,7 +29,7 @@ public class App extends JFrame implements MouseListener {
     public void initTransparent(){
         setUndecorated(true);
         featureBar = new FeatureBar();
-        featureBar.setCurrentFeatureSelection("screenshotMode");
+        featureBar.setCurrentFeatureSelection("screenshot_mode");
 
         add(new JPanel());
         setSize(1600, 900);
@@ -52,6 +54,16 @@ public class App extends JFrame implements MouseListener {
         layout.last(centerPane);
 
         featureBar = new FeatureBar();
+        featureBar.addActionListeners(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getActionCommand().equals("scripting")){
+                    layout.last(centerPane);
+                }else if(e.getActionCommand().equals("taking_screenshot")){
+                    featureBar.setCurrentFeatureSelection("screenshot_mode");
+                }
+            }
+        });
         add(fileList, BorderLayout.WEST);
         add(featureBar, BorderLayout.NORTH);
         setSize(1600, 900);
@@ -66,26 +78,14 @@ public class App extends JFrame implements MouseListener {
         topMenu.update(scriptingArea);
         String feature=featureBar.getCurrentFeatureSelection();
         //System.out.print(feature);
-        if(feature.equals("switch_scripting")){
-            //scriptingArea.setVisible(true);
-            //automation.setVisible(false);
-            layout.last(centerPane);
-            feature="scripting";
-            featureBar.setCurrentFeatureSelection(feature);
-        }else if(feature.equals("screenshotMode")){
+      if(feature.equals("screenshot_mode")){
             if(isUndecorated()){
                 feature="taking_screenshot";
                 featureBar.setCurrentFeatureSelection(feature);
                 System.out.println("Setting Opacity");
             }
-        }else if(feature.equals("taking_screenshot")){
-
         }else if(feature.equals("switch_viewing_screenshot")){
             layout.first(centerPane);
-            feature="viewing_screenshot";
-            featureBar.setCurrentFeatureSelection(feature);
-        } else if(feature.equals("viewing_screenshot")){
-
         }
         repaint();
         return feature;
@@ -97,10 +97,10 @@ public class App extends JFrame implements MouseListener {
 
         while(true){
             String feature=app.run();
-            if(feature.equals("screenshotMode")){
+            if(feature.equals("screenshot_mode")){
                 app.dispose();
                 app = new App(true);
-            }else if(feature.equals("programMode")){
+            }else if(feature.equals("program_mode")){
                 app.dispose();
                 app = new App(false);
             }
@@ -127,7 +127,7 @@ public class App extends JFrame implements MouseListener {
                 }else{
                     System.out.println("Error - x and/or y not greater than first point, try again");
                 }
-                featureBar.setCurrentFeatureSelection("programMode");
+                featureBar.setCurrentFeatureSelection("program_mode");
                 clicks=0;
             }
         }else{
@@ -137,7 +137,7 @@ public class App extends JFrame implements MouseListener {
             if(filepath!=null){
                 System.out.println(filepath+" picked from list.");
                 automation.openImage(fileParser.openImage(filepath));
-                featureBar.setCurrentFeatureSelection("switch_viewing_screenshot");
+                layout.first(centerPane);
             }
         }
     }
