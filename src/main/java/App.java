@@ -23,13 +23,19 @@ public class App extends JFrame implements MouseListener {
         if(!transparent)
             init();
         else
-            initTransparent();
+            initTransparent(null);
     }
 
-    public void initTransparent(){
+    public App(boolean transparent, String feature){
+        if(!transparent)
+            init();
+        else
+            initTransparent(feature);
+    }
+    public void initTransparent(String feature){
         setUndecorated(true);
         featureBar = new FeatureBar();
-        featureBar.setCurrentFeatureSelection("screenshot_mode");
+        featureBar.setCurrentFeatureSelection(feature);
 
         add(new JPanel());
         setSize(1600, 900);
@@ -61,6 +67,8 @@ public class App extends JFrame implements MouseListener {
                     layout.last(centerPane);
                 }else if(e.getActionCommand().equals("taking_screenshot")){
                     featureBar.setCurrentFeatureSelection("screenshot_mode");
+                }else if(e.getActionCommand().equals("taking_fullscreenshot")){
+                    featureBar.setCurrentFeatureSelection("fullscreenshot_mode");
                 }
             }
         });
@@ -78,9 +86,14 @@ public class App extends JFrame implements MouseListener {
         topMenu.update(scriptingArea);
         String feature=featureBar.getCurrentFeatureSelection();
         //System.out.print(feature);
-      if(feature.equals("screenshot_mode")){
+      if(feature.equals("screenshot_mode")||feature.equals("fullscreenshot_mode")){
             if(isUndecorated()){
-                feature="taking_screenshot";
+                if(feature.equals("fullscreenshot_mode")){
+                    Screenshot.takeScreenshot(fileParser);
+                    feature="program_mode";
+                }
+                else
+                    feature="taking_screenshot";
                 featureBar.setCurrentFeatureSelection(feature);
                 System.out.println("Setting Opacity");
             }
@@ -97,9 +110,9 @@ public class App extends JFrame implements MouseListener {
 
         while(true){
             String feature=app.run();
-            if(feature.equals("screenshot_mode")){
+            if(feature.equals("screenshot_mode")||feature.equals("fullscreenshot_mode")){
                 app.dispose();
-                app = new App(true);
+                app = new App(true, feature);
             }else if(feature.equals("program_mode")){
                 app.dispose();
                 app = new App(false);
@@ -123,7 +136,7 @@ public class App extends JFrame implements MouseListener {
                 if(e.getPoint().x>=screenshotArea.x && e.getPoint().y>=screenshotArea.y){
                     screenshotArea.width=e.getPoint().x-screenshotArea.x;
                     screenshotArea.height=e.getPoint().y-screenshotArea.y;
-                    Screenshot.takeScreenshot("test_button", screenshotArea, fileParser);
+                    Screenshot.takeScreenshot(screenshotArea, fileParser);
                 }else{
                     System.out.println("Error - x and/or y not greater than first point, try again");
                 }

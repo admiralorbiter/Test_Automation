@@ -25,7 +25,6 @@ public class TopMenu extends JMenuBar implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==open) {
-            System.out.println("Need to implement open functionality");
             if(scriptingArea!=null){
                 scriptingArea.open();
             }

@@ -58,11 +58,13 @@ public class FileParser {
     }
 
     public Image openImage(String filepath){
-        File file = new File(filepath);
+        filepath=  filepath.replace("\\", "/");
+        File file = new File(filepath+".jpg");
         Image image = null;
         if(file.exists()) {
             try {
-                image = ImageIO.read(file.getAbsoluteFile());
+                image = ImageIO.read(file);
+                System.out.println(image);
             } catch (IOException e) {
                 e.printStackTrace();
             }
