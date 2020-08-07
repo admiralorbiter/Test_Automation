@@ -28,7 +28,8 @@ public class Interpreter {
     public void eatToken(Token token){
         if(token.getType()==TokenType.KEYWORD){
             if(token.getKeyword().equals(Keyword.CLICK)){
-                AutomationFeatures.click(Integer.getInteger(text[position]), Integer.getInteger(text[position]));
+                AutomationFeatures.click(Integer.parseInt(text[position]), Integer.parseInt(text[position+1]));
+                position=position+2;
             }
         }
     }

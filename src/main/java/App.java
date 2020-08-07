@@ -122,6 +122,9 @@ public class App extends JFrame implements MouseListener, KeyListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Interpreter interpreter = new Interpreter("Click 10 11");
+        interpreter.eatToken(interpreter.getNextToken());
+
         System.out.println(e.getPoint());
         //Check to make sure it is within the filelist width
         String filepath=null;
@@ -177,11 +180,7 @@ public class App extends JFrame implements MouseListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-            System.out.println("Space presssed");
-            Interpreter interpreter = new Interpreter("Click 10 10");
-            interpreter.eatToken(interpreter.getNextToken());
-        }
+
     }
 
     @Override

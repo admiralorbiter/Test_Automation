@@ -1,8 +1,20 @@
+import java.awt.*;
+import java.awt.event.InputEvent;
+
 public final class AutomationFeatures {
     public static boolean findScreenshot(){return false;}
     public static boolean findText(){return false;}
     public static boolean click(int x, int y){
         System.out.println(x+", "+y);
-        return false;
+        try {
+            Robot bot = new Robot();
+            bot.mouseMove(x, y);
+            bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+        } catch (AWTException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
