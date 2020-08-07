@@ -9,19 +9,27 @@ public class Interpreter {
         this.text = text.split(" ");
     }
 
-    public Token getNextToken(String[] text){
+    public Token getNextToken(){
         this.text=text;
         if(position> text.length-1)
-            return new Token(TokenType.EOF, null);
+            return new Token(TokenType.EOF);
 
         currentString=text[position];
 
         if(currentString.equals("Click")) {
-            Token token = new Token(TokenType.METHOD, "Click");
+            Token token = new Token(TokenType.KEYWORD, Keyword.CLICK);
             position++;
             return token;
         }
 
         return null;
+    }
+
+    public void eatToken(Token token){
+        if(token.getType()==TokenType.KEYWORD){
+            if(token.getKeyword().equals(Keyword.CLICK)){
+                AutomationFeatures.click(Integer.getInteger(text[position]), Integer.getInteger(text[position]));
+            }
+        }
     }
 }

@@ -1,12 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+
 import static java.awt.GraphicsDevice.WindowTranslucency.*;
 
-public class App extends JFrame implements MouseListener {
+public class App extends JFrame implements MouseListener, KeyListener {
     Test_Automation automation = new Test_Automation();
     FileParser fileParser = new FileParser();
     FileList fileList = new FileList(fileParser.screenshotlist);
@@ -44,6 +42,7 @@ public class App extends JFrame implements MouseListener {
         setResizable(false);
         setVisible(true);
         addMouseListener(this);
+        addKeyListener(this);
         setOpacity(.1f);
     }
 
@@ -80,6 +79,7 @@ public class App extends JFrame implements MouseListener {
         setResizable(false);
         setVisible(true);
         addMouseListener(this);
+        addKeyListener(this);
     }
 
     public String run(){
@@ -172,6 +172,25 @@ public class App extends JFrame implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+            System.out.println("Space presssed");
+            Interpreter interpreter = new Interpreter("Click 10 10");
+            interpreter.eatToken(interpreter.getNextToken());
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
 
     }
 }

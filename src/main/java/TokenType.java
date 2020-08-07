@@ -1,3 +1,3 @@
 public enum TokenType {
-    METHOD, EOF
+    KEYWORD, EOF
 }
