@@ -26,9 +26,14 @@ public class App extends JFrame implements MouseListener, KeyListener {
 
     public App(boolean transparent, String feature){
         if(!transparent)
-            init();
+            initBackground(feature);
         else
             initTransparent(feature);
+    }
+
+    public App(String feature, ScriptingArea scriptingArea){
+        this.scriptingArea=scriptingArea;
+        initBackground(feature);
     }
     public void initTransparent(String feature){
         setUndecorated(true);
@@ -43,7 +48,23 @@ public class App extends JFrame implements MouseListener, KeyListener {
         setVisible(true);
         addMouseListener(this);
         addKeyListener(this);
-        setOpacity(.1f);
+        setOpacity(.01f);
+    }
+
+    public void initBackground(String feature){
+        setUndecorated(true);
+        featureBar = new FeatureBar();
+        featureBar.setCurrentFeatureSelection(feature);
+
+        add(new JPanel());
+        setSize(1, 1);
+        System.out.println(getSize());
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
+        addMouseListener(this);
+        addKeyListener(this);
     }
 
     private void init(){
@@ -68,6 +89,8 @@ public class App extends JFrame implements MouseListener, KeyListener {
                     featureBar.setCurrentFeatureSelection("screenshot_mode");
                 }else if(e.getActionCommand().equals("taking_fullscreenshot")){
                     featureBar.setCurrentFeatureSelection("fullscreenshot_mode");
+                }else if(e.getActionCommand().equals("run_script")){
+                    featureBar.setCurrentFeatureSelection("run_script");
                 }
             }
         });
@@ -85,21 +108,28 @@ public class App extends JFrame implements MouseListener, KeyListener {
     public String run(){
         topMenu.update(scriptingArea);
         String feature=featureBar.getCurrentFeatureSelection();
-        //System.out.print(feature);
-      if(feature.equals("screenshot_mode")||feature.equals("fullscreenshot_mode")){
-            if(isUndecorated()){
-                if(feature.equals("fullscreenshot_mode")){
-                    Screenshot.takeScreenshot(fileParser);
-                    feature="program_mode";
-                }
-                else
-                    feature="taking_screenshot";
-                featureBar.setCurrentFeatureSelection(feature);
-                System.out.println("Setting Opacity");
+      if(feature.equals("screenshot_mode")||feature.equals("fullscreenshot_mode")||feature.equals("run_script")){
+        if(isUndecorated()){
+            if(feature.equals("fullscreenshot_mode")){
+                Screenshot.takeScreenshot(fileParser);
+                feature="program_mode";
             }
-        }else if(feature.equals("switch_viewing_screenshot")){
-            layout.first(centerPane);
+            else if(feature.equals("screenshot_mode"))
+                feature="taking_screenshot";
+            else
+                feature="running_script";
+            featureBar.setCurrentFeatureSelection(feature);
+            System.out.println("Setting Opacity");
         }
+      }else if(feature.equals("switch_viewing_screenshot")){
+          layout.first(centerPane);
+      }else if(feature.equals("running_script")){
+          System.out.println("Processing: "+scriptingArea.getText());
+          Interpreter interpreter = new Interpreter(scriptingArea.getText());
+          interpreter.run();
+          feature="program_mode";
+          featureBar.setCurrentFeatureSelection(feature);
+      }
         repaint();
         return feature;
     }
@@ -110,20 +140,24 @@ public class App extends JFrame implements MouseListener, KeyListener {
 
         while(true){
             String feature=app.run();
+            //TODO: Add flag on feature that is called with these three to dispose so I don't have to add it here everytime
             if(feature.equals("screenshot_mode")||feature.equals("fullscreenshot_mode")){
                 app.dispose();
                 app = new App(true, feature);
             }else if(feature.equals("program_mode")){
                 app.dispose();
                 app = new App(false);
+            }else if(feature.equals("run_script")){
+                app.dispose();
+                app = new App(feature, app.scriptingArea);
             }
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Interpreter interpreter = new Interpreter("Click 10 11");
-        interpreter.eatToken(interpreter.getNextToken());
+        //Interpreter interpreter = new Interpreter("Click 10 11");
+        //interpreter.eatToken(interpreter.getNextToken());
 
         System.out.println(e.getPoint());
         //Check to make sure it is within the filelist width

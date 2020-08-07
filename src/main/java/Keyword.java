@@ -1,3 +1,3 @@
 public enum Keyword {
-    CLICK
+    CLICK, WAIT
 }
