@@ -13,6 +13,7 @@ public class App extends JFrame implements MouseListener, KeyListener {
     FeatureBar featureBar;
     JPanel centerPane = new JPanel();
     CardLayout layout = new CardLayout();
+    TransparentPanel transparentPanel = new TransparentPanel();
 
     private int clicks=0;
     private Rectangle screenshotArea=new Rectangle();
@@ -35,12 +36,14 @@ public class App extends JFrame implements MouseListener, KeyListener {
         this.scriptingArea=scriptingArea;
         initBackground(feature);
     }
+
+
     public void initTransparent(String feature){
         setUndecorated(true);
         featureBar = new FeatureBar();
         featureBar.setCurrentFeatureSelection(feature);
 
-        add(new JPanel());
+        add(transparentPanel);
         setSize(1600, 900);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
