@@ -45,6 +45,7 @@ public class Find extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+
     }
 
     @Override
