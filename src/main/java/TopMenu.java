@@ -9,6 +9,9 @@ public class TopMenu extends JMenuBar implements ActionListener {
     JMenuItem save = new JMenuItem("Save");
     JMenuItem saveAs = new JMenuItem("Save As");
     ScriptingArea scriptingArea = null;
+
+    JMenu search = new JMenu("Search");
+    JMenuItem find = new JMenuItem("Find");
     public TopMenu(){
         open.addActionListener(this);
         save.addActionListener(this);
@@ -16,6 +19,9 @@ public class TopMenu extends JMenuBar implements ActionListener {
         menu.add(save);
         menu.add(saveAs);
         add(menu);
+        find.addActionListener(this);
+        search.add(find);
+        add(search);
     }
 
     public void update(ScriptingArea scriptingArea){
@@ -35,6 +41,10 @@ public class TopMenu extends JMenuBar implements ActionListener {
         }else if(e.getSource()==saveAs){
             if(scriptingArea!=null){
                 scriptingArea.saveAs();
+            }
+        }else if(e.getSource()==find){
+            if(scriptingArea!=null){
+                new Find(scriptingArea);
             }
         }
     }
