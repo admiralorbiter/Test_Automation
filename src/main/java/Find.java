@@ -48,8 +48,21 @@ public class Find extends JFrame implements ActionListener {
 
     }
 
+    public void find(){
+        int startIndex=text.getText().toLowerCase().indexOf(fieldFind.getText().toLowerCase());
+        if(startIndex<0 || startIndex>=text.getText().length()){
+            System.out.println("Could not find "+fieldFind.getText());
+            return;
+        }
+
+        int endIndex=startIndex+fieldFind.getText().length();
+        text.select(startIndex, endIndex);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if(e.getSource()==buttonFind){
+            find();
+        }
     }
 }
