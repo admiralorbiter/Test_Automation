@@ -7,6 +7,7 @@ public class Find extends JFrame implements ActionListener {
     private JLabel labelFind, labelReplace;
     private JTextField fieldFind, fieldReplace;
     private JButton buttonFind, buttonNext, buttonReplaceAll;
+    private int findIndex=0;
 
     public Find(JTextArea text){
         setLayout(null);
@@ -59,10 +60,31 @@ public class Find extends JFrame implements ActionListener {
         text.select(startIndex, endIndex);
     }
 
+    public void replace(){
+        text.setText(text.getText().toLowerCase().replaceAll(fieldFind.getText().toLowerCase(), fieldReplace.getText()));
+    }
+
+    public void next(){
+        int startIndex=text.getText().toLowerCase().indexOf(fieldFind.getText().toLowerCase(), findIndex);
+        if(startIndex<0 || startIndex>=text.getText().length()){
+            System.out.println("End of File"+fieldFind.getText());
+            findIndex=0;
+            return;
+        }
+        int endIndex=startIndex+fieldFind.getText().length();
+        text.select(startIndex, endIndex);
+        findIndex=endIndex+1;
+        System.out.println(findIndex);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==buttonFind){
             find();
+        }else if(e.getSource()==buttonReplaceAll){
+            replace();
+        }else if(e.getSource()==buttonNext){
+            next();
         }
     }
 }
