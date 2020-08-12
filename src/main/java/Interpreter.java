@@ -39,6 +39,10 @@ public class Interpreter {
             Token token = new Token(TokenType.KEYWORD, Keyword.CLICKSCREENSHOT);
             position++;
             return token;
+        }else if(currentString.equals("TakeScreenshot")){
+            Token token = new Token(TokenType.KEYWORD, Keyword.TAKESCREENSHOT);
+            position++;
+            return token;
         }else{
             position++;
         }
@@ -61,6 +65,17 @@ public class Interpreter {
             }else if(token.getKeyword().equals(Keyword.CLICKSCREENSHOT)){
                 if(text.length>position){
                     AutomationFeatures.findScreenshot(text[position]);
+                    position++;
+                }
+            }else if(token.getKeyword().equals(Keyword.TAKESCREENSHOT)){
+                if(text.length==position){
+                    AutomationFeatures.takeScreenshot();
+                }else if(text.length>position){
+                    if(text[position].charAt(0)=='['){
+                        //Include rectangle bounds
+                        AutomationFeatures.takeScreenshot(null);
+                    }else
+                        AutomationFeatures.takeScreenshot();
                 }
             }
         }

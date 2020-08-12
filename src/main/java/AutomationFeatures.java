@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
 public final class AutomationFeatures {
+    public static boolean takeScreenshot(){return false;}
+    public static boolean takeScreenshot(Rectangle bounds){return false;}
     public static boolean findScreenshot(String filePath){
         System.out.println("Finding Screenshot");
         String parentDirectory ="C://Test_Automation//";
