@@ -35,6 +35,10 @@ public class Interpreter {
             Token token = new Token(TokenType.KEYWORD, Keyword.WAIT);
             position++;
             return token;
+        }else if(currentString.equals("ClickScreenshot")){
+            Token token = new Token(TokenType.KEYWORD, Keyword.CLICKSCREENSHOT);
+            position++;
+            return token;
         }else{
             position++;
         }
@@ -53,6 +57,10 @@ public class Interpreter {
                 if(text.length>position){
                     AutomationFeatures.wait(Integer.parseInt(text[position]));
                     position++;
+                }
+            }else if(token.getKeyword().equals(Keyword.CLICKSCREENSHOT)){
+                if(text.length>position){
+                    AutomationFeatures.findScreenshot(text[position]);
                 }
             }
         }

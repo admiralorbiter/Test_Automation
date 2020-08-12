@@ -1,7 +1,7 @@
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -10,9 +10,13 @@ import java.awt.image.DataBufferByte;
 
 public final class AutomationFeatures {
     public static boolean findScreenshot(String filePath){
+        System.out.println("Finding Screenshot");
+        String parentDirectory ="C://Test_Automation//";
+
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         Mat template=null;
+        Mat source = null;
         BufferedImage image=null;
 
         try {
@@ -25,12 +29,27 @@ public final class AutomationFeatures {
             e.printStackTrace();
         }
 
+        /*
         Mat source = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
         byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         source.put(0, 0, data);
+         */
 
-        template=Imgcodecs.imread(filePath);
+        //template=Imgcodecs.imread(parentDirectory+filePath);
+        template=Imgcodecs.imread(parentDirectory+"ide.jpg");
+        source = Imgcodecs.imread(parentDirectory+"fullscreen.jpg");
+        Mat outputImage=new Mat();
+        int machMethod= Imgproc.TM_CCOEFF;
+        Imgproc.matchTemplate(source, template, outputImage, machMethod);
 
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(outputImage);
+        Point matchLoc=mmr.maxLoc;
+        //Draw rectangle on result image
+        Imgproc.rectangle(source, matchLoc, new Point(matchLoc.x + template.cols(),
+                matchLoc.y + template.rows()), new Scalar(0, 0, 255), 5);
+        System.out.println(matchLoc);
+        Imgcodecs.imwrite(parentDirectory+"test.jpg", source);
+        System.out.println("Matched.");
 
 
         return false;}
