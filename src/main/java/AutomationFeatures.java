@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.IOException;
+import java.io.InputStream;
 
 public final class AutomationFeatures {
     public static boolean takeScreenshot(FileParser fileParser, String filename){
@@ -36,11 +38,11 @@ public final class AutomationFeatures {
 
         try {
             Robot r = new Robot();
-
+            Thread.sleep(1000);
             // Used to get ScreenSize and capture image
             Rectangle capture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             image = r.createScreenCapture(capture);
-        } catch (AWTException e) {
+        } catch (AWTException | InterruptedException e) {
             e.printStackTrace();
             return false;
         }
@@ -51,9 +53,14 @@ public final class AutomationFeatures {
         source.put(0, 0, data);
          */
 
+
+
         //template=Imgcodecs.imread(parentDirectory+filePath);
-        template=Imgcodecs.imread(parentDirectory+"ide.jpg");
-        source = Imgcodecs.imread(parentDirectory+"fullscreen.jpg");
+        template=Imgcodecs.imread(parentDirectory+filePath);
+        //source = Imgcodecs.imread(parentDirectory+"fullscreen.jpg");
+        source = img2Mat(image);
+        //Imgcodecs.imwrite(parentDirectory+"source.jpg", source);
+        //Screenshot.saveScreenshot(image);
         Mat outputImage=new Mat();
         int machMethod= Imgproc.TM_CCOEFF;
         Imgproc.matchTemplate(source, template, outputImage, machMethod);
@@ -65,10 +72,25 @@ public final class AutomationFeatures {
                 matchLoc.y + template.rows()), new Scalar(0, 0, 255), 5);
         System.out.println(matchLoc);
         Imgcodecs.imwrite(parentDirectory+"test.jpg", source);
+        Imgcodecs.imwrite(parentDirectory+"fullscreen.jpg", template);
         System.out.println("Matched.");
 
+    return true;}
 
-        return true;}
+    public static Mat img2Mat(BufferedImage in) {
+        Mat out = new Mat(in.getHeight(), in.getWidth(), CvType.CV_8UC3);
+        byte[] data = new byte[in.getWidth() * in.getHeight() * (int) out.elemSize()];
+        int[] dataBuff = in.getRGB(0, 0, in.getWidth(), in.getHeight(), null, 0, in.getWidth());
+        for (int i = 0; i < dataBuff.length; i++) {
+            data[i * 3] = (byte) ((dataBuff[i]));
+            data[i * 3 + 1] = (byte) ((dataBuff[i]));
+            data[i * 3 + 2] = (byte) ((dataBuff[i]));
+        }
+        out.put(0, 0, data);
+        return out;
+    }
+
+
     public static boolean findText(){return false;}
     public static boolean wait(int seconds){
         System.out.println("WaitFor: "+seconds);
