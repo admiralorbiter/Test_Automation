@@ -1,11 +1,15 @@
+import java.awt.*;
+
 public class Interpreter {
 
     private int position=0;
     private Token currentToken=null;
     private String[] text;
     private String currentString;
+    private FileParser fileParser = null;
 
-    public Interpreter(String text){
+    public Interpreter(FileParser fileParser, String text){
+        this.fileParser=fileParser;
         if(text!=null)
             this.text = text.split(" ");
         else
@@ -68,14 +72,23 @@ public class Interpreter {
                     position++;
                 }
             }else if(token.getKeyword().equals(Keyword.TAKESCREENSHOT)){
-                if(text.length==position){
-                    AutomationFeatures.takeScreenshot();
-                }else if(text.length>position){
-                    if(text[position].charAt(0)=='['){
+                if(text.length==position+1){
+                    AutomationFeatures.takeScreenshot(fileParser, text[position]);
+                    position++;
+                }else if(text.length>position+1){
+                    if(text[position+1].charAt(0)=='['){
                         //Include rectangle bounds
-                        AutomationFeatures.takeScreenshot(null);
-                    }else
-                        AutomationFeatures.takeScreenshot();
+                        AutomationFeatures.takeScreenshot(fileParser, text[position],new Rectangle(
+                                Integer.parseInt(text[position+1].substring(1)),
+                                Integer.parseInt(text[position+2]),
+                                Integer.parseInt(text[position+3]),
+                                Integer.parseInt(text[position+4].substring(0, text[position+4].length()-1))
+                        ));
+                        position=position+4;//Probably will end up increasing by 4 since there will be 4 values for the bound
+                    }else {
+                        AutomationFeatures.takeScreenshot(fileParser,text[position]);
+                        position++;
+                    }
                 }
             }
         }

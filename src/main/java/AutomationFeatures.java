@@ -9,8 +9,21 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
 public final class AutomationFeatures {
-    public static boolean takeScreenshot(){return false;}
-    public static boolean takeScreenshot(Rectangle bounds){return false;}
+    public static boolean takeScreenshot(FileParser fileParser, String filename){
+        System.out.println("Take Screenshot");
+        String parentDirectory ="C://Test_Automation//";
+
+        Screenshot.takeScreenshot(filename, fileParser);
+
+        return true;}
+    public static boolean takeScreenshot(FileParser fileParser, String filename, Rectangle bounds){
+        System.out.println("Take Screenshot");
+        String parentDirectory ="C://Test_Automation//";
+
+        Screenshot.takeScreenshot(filename, bounds, fileParser);
+
+        return true;
+    }
     public static boolean findScreenshot(String filePath){
         System.out.println("Finding Screenshot");
         String parentDirectory ="C://Test_Automation//";
@@ -29,6 +42,7 @@ public final class AutomationFeatures {
             image = r.createScreenCapture(capture);
         } catch (AWTException e) {
             e.printStackTrace();
+            return false;
         }
 
         /*
@@ -54,7 +68,7 @@ public final class AutomationFeatures {
         System.out.println("Matched.");
 
 
-        return false;}
+        return true;}
     public static boolean findText(){return false;}
     public static boolean wait(int seconds){
         System.out.println("WaitFor: "+seconds);

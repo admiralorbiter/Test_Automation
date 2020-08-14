@@ -128,7 +128,7 @@ public class App extends JFrame implements MouseListener, KeyListener {
           layout.first(centerPane);
       }else if(feature.equals("running_script")){
           System.out.println("Processing: "+scriptingArea.getText());
-          Interpreter interpreter = new Interpreter(scriptingArea.getText());
+          Interpreter interpreter = new Interpreter(fileParser, scriptingArea.getText());
           interpreter.run();
           feature="program_mode";
           featureBar.setCurrentFeatureSelection(feature);
